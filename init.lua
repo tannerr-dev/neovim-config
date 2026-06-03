@@ -35,7 +35,6 @@ vim.opt.expandtab = true
 vim.opt.smartindent = true
 vim.opt.wrap = false
 vim.opt.mouse = 'a'
-vim.opt.mouse = 'a'
 vim.opt.termguicolors = true
 vim.o.confirm = true
 vim.g.have_nerd_font = true
@@ -188,7 +187,7 @@ require('lazy').setup({
         'nvim-telescope/telescope-fzf-native.nvim',
 
         -- `build` is used to run some command when the plugin is installed/updated.
-        -- This is only run then, not every time Neovim starts up.
+        -- This is only run then, not every time neovim starts up.
         build = 'make',
 
         -- `cond` is a condition used to determine whether this plugin should be
@@ -261,10 +260,10 @@ require('lazy').setup({
     init = function()
       -- Load the colorscheme here.
       -- vim.cmd.colorscheme 'gruvbox'
-      vim.cmd.colorscheme 'habamax'
+      -- vim.cmd.colorscheme 'habamax'
       -- vim.cmd.colorscheme 'rose-pine'
       -- vim.cmd.colorscheme 'rose-pine-moon'
-      -- vim.cmd.colorscheme 'retrobox'
+      vim.cmd.colorscheme 'retrobox'
       -- vim.cmd.colorscheme 'tokyonight-night'
       -- vim.cmd.colorscheme 'tokyonight-day'
       -- vim.cmd.colorscheme 'tokyonight-storm'
@@ -284,6 +283,180 @@ require('lazy').setup({
     config = true
     -- use opts = {} for passing setup options
     -- this is equivalent to setup({}) function
+  },
+  -- [[ Tree-sitter ]]
+  {
+    'nvim-treesitter/nvim-treesitter',
+    branch = 'master',
+    build = ':TSUpdate',
+    config = function()
+      require('nvim-treesitter.configs').setup {
+        ensure_installed = {
+          'python', 'go', 'javascript', 'typescript', 'rust', 'lua', 'c',
+          'html', 'css', 'vim', 'vimdoc', 'query', 'markdown',
+        },
+        auto_install = true,
+        highlight = { enable = true },
+        indent = { enable = true },
+      }
+    end,
+  },
+  -- [[ LSP ]]
+  {
+    'williamboman/mason.nvim',
+    config = true,
+  },
+  {
+    'williamboman/mason-lspconfig.nvim',
+    dependencies = { 'williamboman/mason.nvim', 'neovim/nvim-lspconfig' },
+    config = function()
+      require('mason-lspconfig').setup {
+        ensure_installed = {
+          'pyright', 'gopls', 'ts_ls', 'rust_analyzer', 'lua_ls',
+          'clangd', 'html', 'cssls',
+        },
+      }
+    end,
+  },
+  {
+    'neovim/nvim-lspconfig',
+    dependencies = {
+      'williamboman/mason-lspconfig.nvim',
+      'hrsh7th/cmp-nvim-lsp',
+    },
+    config = function()
+      local capabilities = require('cmp_nvim_lsp').default_capabilities()
+
+      -- Apply capabilities to all servers via wildcard config
+      vim.lsp.config('*', {
+        capabilities = capabilities,
+      })
+
+      -- Server-specific overrides
+      vim.lsp.config('lua_ls', {
+        settings = {
+          Lua = {
+            runtime = { version = 'LuaJIT' },
+            workspace = {
+              checkThirdParty = false,
+              library = {
+                '${3rd}/luv/library',
+                unpack(vim.api.nvim_get_runtime_file('', true)),
+              },
+            },
+            completion = { callSnippet = 'Replace' },
+          },
+        },
+      })
+
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('kickstart-lsp-attach', { clear = true }),
+        callback = function(ev)
+          local bufnr = ev.buf
+          local map = function(keys, func, desc)
+            vim.keymap.set('n', keys, func, { buffer = bufnr, desc = 'LSP: ' .. desc })
+          end
+
+          map('gd', vim.lsp.buf.definition, '[G]oto [D]efinition')
+          map('gr', vim.lsp.buf.references, '[G]oto [R]eferences')
+          map('gI', vim.lsp.buf.implementation, '[G]oto [I]mplementation')
+          map('<leader>D', vim.lsp.buf.type_definition, 'Type [D]efinition')
+          map('K', vim.lsp.buf.hover, 'Hover Documentation')
+          map('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
+          map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
+          map('<leader>f', function() vim.lsp.buf.format { async = true } end, '[F]ormat buffer')
+          map('<leader>ds', vim.lsp.buf.document_symbol, '[D]ocument [S]ymbols')
+
+          vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = bufnr, desc = 'LSP: Previous diagnostic' })
+          vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = bufnr, desc = 'LSP: Next diagnostic' })
+        end,
+      })
+    end,
+  },
+  {
+    'j-hui/fidget.nvim',
+    opts = {},
+  },
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {},
+  },
+  -- [[ Completion ]]
+  {
+    'hrsh7th/nvim-cmp',
+    event = 'InsertEnter',
+    dependencies = {
+      'hrsh7th/cmp-nvim-lsp',
+      'hrsh7th/cmp-buffer',
+      'hrsh7th/cmp-path',
+      'hrsh7th/cmp-cmdline',
+      {
+        'L3MON4D3/LuaSnip',
+        dependencies = { 'rafamadriz/friendly-snippets' },
+        config = function()
+          require('luasnip.loaders.from_vscode').lazy_load()
+        end,
+      },
+      'saadparwaiz1/cmp_luasnip',
+    },
+    config = function()
+      local cmp = require('cmp')
+      local luasnip = require('luasnip')
+
+      cmp.setup {
+        snippet = {
+          expand = function(args)
+            luasnip.lsp_expand(args.body)
+          end,
+        },
+        mapping = cmp.mapping.preset.insert {
+          ['<C-n>'] = cmp.mapping.select_next_item(),
+          ['<C-p>'] = cmp.mapping.select_prev_item(),
+          ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+          ['<C-f>'] = cmp.mapping.scroll_docs(4),
+          ['<C-y>'] = cmp.mapping.confirm { select = true },
+          ['<C-Space>'] = cmp.mapping.complete {},
+          ['<Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.expand_or_jumpable() then
+              luasnip.expand_or_jump()
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+          ['<S-Tab>'] = cmp.mapping(function(fallback)
+            if luasnip.jumpable(-1) then
+              luasnip.jump(-1)
+            else
+              fallback()
+            end
+          end, { 'i', 's' }),
+        },
+        sources = cmp.config.sources {
+          { name = 'nvim_lsp' },
+          { name = 'luasnip' },
+          { name = 'buffer' },
+          { name = 'path' },
+        },
+      }
+
+      -- Use buffer source for `/` and `?`
+      cmp.setup.cmdline({ '/', '?' }, {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = {
+          { name = 'buffer' },
+        },
+      })
+
+      -- Use cmdline & path source for `:`
+      cmp.setup.cmdline(':', {
+        mapping = cmp.mapping.preset.cmdline(),
+        sources = cmp.config.sources {
+          { name = 'path' },
+          { name = 'cmdline' },
+        },
+      })
+    end,
   },
 }, {
   ui = {
@@ -356,9 +529,6 @@ end)
 vim.keymap.set('n', '<C-S-N>', function()
   harpoon:list():next()
 end)
-
-local harpoon = require 'harpoon'
-harpoon:setup {}
 
 -- basic telescope configuration
 local conf = require('telescope.config').values
