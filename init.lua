@@ -315,6 +315,9 @@ require('lazy').setup({
           'pyright', 'gopls', 'ts_ls', 'rust_analyzer', 'lua_ls',
           'clangd', 'html', 'cssls',
         },
+        automatic_enable = {
+          exclude = { 'stylua' },
+        },
       }
     end,
   },
