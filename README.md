@@ -17,7 +17,7 @@ A single-file Neovim configuration using [lazy.nvim](https://github.com/folke/la
 | `nvim-highlight-colors` | Show color previews inline |
 | `smear-cursor.nvim` | Smooth cursor animation |
 | `nvim-autopairs` | Automatically close brackets and quotes |
-| `nvim-treesitter` | Syntax highlighting and indentation |
+| `nvim-treesitter` | Syntax highlighting and indentation (archived, see below) |
 | `mason.nvim` | Package manager for LSP servers, linters, and formatters |
 | `mason-lspconfig.nvim` | Bridge between Mason and nvim-lspconfig |
 | `nvim-lspconfig` | Official LSP client configurations |
@@ -161,6 +161,37 @@ These parsers are automatically installed on first launch:
 - `markdown`
 
 Additional parsers for new filetypes are installed automatically (`auto_install = true`).
+
+---
+
+## Treesitter Status & Future Upgrade Path
+
+> **Note:** The [`nvim-treesitter`](https://github.com/nvim-treesitter/nvim-treesitter) plugin repository was archived by its owner on **April 3, 2026** and is now read-only. It is pinned to the `master` branch in this config, which remains stable and functional.
+
+### Why keep it?
+
+- The `master` branch is mature, stable, and continues to work with Neovim 0.12.
+- Lazy.nvim installs from archived repositories without issues.
+- It provides convenient parser management (`:TSInstall`, `ensure_installed`, `auto_install`) that Neovim does not natively handle.
+
+### Future upgrade paths
+
+When you're ready to move away from the archived plugin, you have two options:
+
+**Option 1: Go fully native (Neovim 0.12+)**
+Remove `nvim-treesitter` and use Neovim's built-in treesitter support:
+- Highlighting: `vim.treesitter.start()` is built-in.
+- Indentation: `vim.bo.indentexpr = "v:lua.vim.treesitter.query.get_indent()"`
+- **Trade-off:** You lose automatic parser installation. You must install parsers manually via your OS package manager (e.g., `tree-sitter-lua`) or compile them with `tree-sitter-cli`.
+
+**Option 2: Switch to a community fork**
+If a well-maintained community fork emerges, update the plugin spec in `init.lua`:
+```lua
+{ 'username/nvim-treesitter-fork', branch = 'main', build = ':TSUpdate' }
+```
+
+**Option 3: Keep using the archived plugin**
+There is no immediate need to change anything. The plugin will continue to work as long as the parsers compile and Neovim's treesitter API remains compatible.
 
 ---
 
