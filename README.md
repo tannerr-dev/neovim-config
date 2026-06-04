@@ -108,6 +108,29 @@ These keymaps are active when an LSP server is attached to the current buffer.
 
 ---
 
+## Sign Column (Diagnostics)
+
+The column to the left of the line numbers is the **sign column**. It appeared after adding LSP support because language servers now report issues directly in the editor.
+
+### Symbols
+
+| Symbol | Meaning | Severity |
+|--------|---------|----------|
+| `E` | Error | Code that will not compile or run |
+| `W` | Warning | Suspicious or deprecated code |
+| `I` | Information | e.g., unused variables |
+| `H` | Hint | Style suggestions or quick fixes |
+
+### Diagnostic Keymaps
+
+| Key | Action |
+|-----|--------|
+| `<leader>e` | Show full diagnostic message in a floating window |
+| `[d` | Jump to previous diagnostic |
+| `]d` | Jump to next diagnostic |
+
+---
+
 ## LSP Servers
 
 Managed automatically via [Mason](https://github.com/williamboman/mason.nvim). The following servers are configured to auto-install:

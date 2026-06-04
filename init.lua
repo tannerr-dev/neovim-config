@@ -370,6 +370,7 @@ require('lazy').setup({
           map('<leader>f', function() vim.lsp.buf.format { async = true } end, '[F]ormat buffer')
           map('<leader>ds', vim.lsp.buf.document_symbol, '[D]ocument [S]ymbols')
 
+          map('<leader>e', vim.diagnostic.open_float, '[E]xplain diagnostic')
           vim.keymap.set('n', '[d', vim.diagnostic.goto_prev, { buffer = bufnr, desc = 'LSP: Previous diagnostic' })
           vim.keymap.set('n', ']d', vim.diagnostic.goto_next, { buffer = bufnr, desc = 'LSP: Next diagnostic' })
         end,
