@@ -253,13 +253,24 @@ require('lazy').setup({
       end, { desc = '[S]earch [N]eovim files' })
     end,
   },
+
+  -- extra color theme plugins
+  { "savq/melange-nvim" },
+  {
+      "dgox16/oldworld.nvim",
+      lazy = false,
+      priority = 1000,
+  },
   {
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'folke/tokyonight.nvim',
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
-      vim.cmd.colorscheme 'slate'
+      vim.cmd.colorscheme 'oldworld'
+      -- vim.cmd.colorscheme 'melange'
+      -- vim.cmd.colorscheme 'desert'
+      -- vim.cmd.colorscheme 'slate'
       -- vim.cmd.colorscheme 'habamax'
       -- vim.cmd.colorscheme 'rose-pine'
       -- vim.cmd.colorscheme 'rose-pine-moon'
@@ -274,8 +285,8 @@ require('lazy').setup({
     end,
   },
   -- Highlight todo, notes, etc in comments
-  { 
-      'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } 
+  {
+      'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false }
   },
   {
     'windwp/nvim-autopairs',
