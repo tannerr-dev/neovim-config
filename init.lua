@@ -259,11 +259,11 @@ require('lazy').setup({
     priority = 1000, -- Make sure to load this before all the other start plugins.
     init = function()
       -- Load the colorscheme here.
-      -- vim.cmd.colorscheme 'gruvbox'
+      vim.cmd.colorscheme 'slate'
       -- vim.cmd.colorscheme 'habamax'
       -- vim.cmd.colorscheme 'rose-pine'
       -- vim.cmd.colorscheme 'rose-pine-moon'
-      vim.cmd.colorscheme 'retrobox'
+      -- vim.cmd.colorscheme 'retrobox'
       -- vim.cmd.colorscheme 'tokyonight-night'
       -- vim.cmd.colorscheme 'tokyonight-day'
       -- vim.cmd.colorscheme 'tokyonight-storm'
