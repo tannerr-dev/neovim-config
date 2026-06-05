@@ -38,6 +38,7 @@ vim.opt.mouse = 'a'
 vim.opt.termguicolors = true
 vim.o.confirm = true
 vim.g.have_nerd_font = true
+vim.opt.spell = false
 
 -- This clears the background color of nvim
 vim.cmd [[
@@ -327,7 +328,7 @@ require('lazy').setup({
           'clangd', 'html', 'cssls',
         },
         automatic_enable = {
-          exclude = { 'stylua' },
+          exclude = { 'stylua', 'codebook' },
         },
       }
     end,
@@ -359,6 +360,9 @@ require('lazy').setup({
               },
             },
             completion = { callSnippet = 'Replace' },
+            diagnostics = {
+              disable = { 'spell-check' },
+            },
           },
         },
       })
