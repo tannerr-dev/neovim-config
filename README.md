@@ -96,10 +96,10 @@ These keymaps work in any buffer. Folds are powered by the LSP when available, f
 
 | Key | Action |
 |-----|--------|
-| `zR` | Open all folds |
-| `zM` | Close all folds |
-| `zr` | Open folds except kinds |
-| `zm` | Close folds with |
+| `zc` | Close fold|
+| `zo` | Open fold |
+| `zC` | Close all folds |
+| `zO` | Open all folds |
 
 > Standard Vim fold commands (`za`, `zo`, `zc`, etc.) also work. See `:help folding`.
 
