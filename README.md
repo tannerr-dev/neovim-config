@@ -31,6 +31,7 @@ A single-file Neovim configuration using [lazy.nvim](https://github.com/folke/la
 | `LuaSnip` | Snippet engine |
 | `friendly-snippets` | VS Code-style snippet collection |
 | `nvim-ufo` | LSP-powered code folding (with `promise-async`) |
+| `vim-fugitive` | Git integration (status, diff, blame, log, etc.) |
 
 ---
 
@@ -76,6 +77,18 @@ A single-file Neovim configuration using [lazy.nvim](https://github.com/folke/la
 | `<C-S-P>` | Previous Harpoon file |
 | `<C-S-N>` | Next Harpoon file |
 | `<C-e>` | Open Harpoon window in Telescope |
+
+### Git (Fugitive)
+
+These keymaps are available in any buffer. See `:help fugitive` for the full command list.
+
+| Key | Action |
+|-----|--------|
+| `<leader>gs` | Git [S]tatus (opens `:G` interactive window) |
+| `<leader>gd` | Git [D]iff (`:Gdiffsplit`) |
+| `<leader>gb` | Git [B]lame (`:G blame`) |
+| `<leader>gl` | Git [L]og (`:G log`) |
+| `<leader>gw` | Git [W]rite (stage current file) |
 
 ### Folds (nvim-ufo)
 
@@ -367,3 +380,9 @@ Ensure your terminal supports true color and you have a Nerd Font selected.
 | `:LspInfo` | Show active LSP clients for current buffer |
 | `:LspRestart` | Restart LSP client for current buffer |
 | `:Telescope` | Open Telescope picker |
+| `:G` | Open Fugitive git status window |
+| `:Gdiffsplit` | Diff current file against index |
+| `:G blame` | Blame current file |
+| `:G log` | Git log |
+| `:G write` | Stage current file |
+| `:G read` | Checkout current file |

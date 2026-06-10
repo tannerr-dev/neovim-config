@@ -164,6 +164,7 @@ require('lazy').setup({
       require('which-key').add {
         { '<leader>c', group = '[C]ode' },
         { '<leader>d', group = '[D]ocument' },
+        { '<leader>g', group = '[G]it' },
         { '<leader>r', group = '[R]ename' },
         { '<leader>s', group = '[S]earch' },
         { '<leader>w', group = '[W]orkspace' },
@@ -497,6 +498,9 @@ require('lazy').setup({
       })
     end,
   },
+  {
+    'tpope/vim-fugitive',
+  },
 }, {
   ui = {
     -- If you are using a Nerd Font: set icons to an empty table which will use the
@@ -593,5 +597,11 @@ vim.keymap.set('n', '<C-e>', function()
   toggle_telescope(harpoon:list())
 end, { desc = 'Open harpoon window' })
 
+-- Fugitive (Git) keymaps
+vim.keymap.set('n', '<leader>gs', ':G<CR>', { desc = '[G]it [S]tatus' })
+vim.keymap.set('n', '<leader>gd', ':Gdiffsplit<CR>', { desc = '[G]it [D]iff' })
+vim.keymap.set('n', '<leader>gb', ':G blame<CR>', { desc = '[G]it [B]lame' })
+vim.keymap.set('n', '<leader>gl', ':G log<CR>', { desc = '[G]it [L]og' })
+vim.keymap.set('n', '<leader>gw', ':G write<CR>', { desc = '[G]it [W]rite (stage file)' })
 
 
