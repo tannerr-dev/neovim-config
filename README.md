@@ -30,6 +30,7 @@ A single-file Neovim configuration using [lazy.nvim](https://github.com/folke/la
 | `cmp-cmdline` | Command-line completion (`:` and `/`) |
 | `LuaSnip` | Snippet engine |
 | `friendly-snippets` | VS Code-style snippet collection |
+| `nvim-ufo` | LSP-powered code folding (with `promise-async`) |
 
 ---
 
@@ -76,6 +77,19 @@ A single-file Neovim configuration using [lazy.nvim](https://github.com/folke/la
 | `<C-S-N>` | Next Harpoon file |
 | `<C-e>` | Open Harpoon window in Telescope |
 
+### Folds (nvim-ufo)
+
+These keymaps work in any buffer. Folds are powered by the LSP when available, falling back to indentation.
+
+| Key | Action |
+|-----|--------|
+| `zR` | Open all folds |
+| `zM` | Close all folds |
+| `zr` | Open folds except kinds |
+| `zm` | Close folds with |
+
+> Standard Vim fold commands (`za`, `zo`, `zc`, etc.) also work. See `:help folding`.
+
 ### LSP (Language Server Protocol)
 
 These keymaps are active when an LSP server is attached to the current buffer.
@@ -105,6 +119,30 @@ These keymaps are active when an LSP server is attached to the current buffer.
 | `<C-Space>` | Trigger completion manually |
 | `<Tab>` | Expand snippet or jump forward |
 | `<S-Tab>` | Jump snippet backward |
+
+---
+
+## How to Use: Folds
+
+Folds let you collapse and expand blocks of code. This config uses [`nvim-ufo`](https://github.com/kevinhwang91/nvim-ufo) with the LSP as the primary provider, so folds match your language server's understanding of the code structure.
+
+### Basic Commands
+
+| Command | Action |
+|---------|--------|
+| `za` | Toggle fold under cursor |
+| `zo` | Open fold under cursor |
+| `zc` | Close fold under cursor |
+| `zR` | Open all folds (global) |
+| `zM` | Close all folds (global) |
+| `zr` | Open more folds (incremental) |
+| `zm` | Close more folds (incremental) |
+
+### Quick Tips
+
+- **Navigate inside a closed fold**: Move the cursor over the fold indicator and press `za` to open it.
+- **Folds update automatically** when you edit the file.
+- **No LSP?** Folds will fall back to indentation-based folding.
 
 ---
 
